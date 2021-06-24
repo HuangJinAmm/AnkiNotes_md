@@ -1,6 +1,7 @@
 mod cli;
 mod task;
 mod anki;
+mod anki_connector;
 use structopt::StructOpt;
 
 use anyhow::anyhow;
@@ -11,6 +12,8 @@ use std::path::PathBuf;
 fn main() ->anyhow::Result<()> {
     let CommandLineArgs {
         journal_file,
+        output_file,  
+        flag,
     } = CommandLineArgs::from_args();
 
     let journal_file = journal_file

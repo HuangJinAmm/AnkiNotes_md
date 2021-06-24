@@ -10,4 +10,8 @@ pub struct CommandLineArgs {
     /// Use a different journal file.
     #[structopt(parse(from_os_str), short, long)]
     pub journal_file: Option<PathBuf>,
+    #[structopt(parse(from_os_str), short, long)]
+    pub output_file: Option<PathBuf>,
+    #[structopt(short, long)]
+    pub flag:bool,
 }
