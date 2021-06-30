@@ -25,7 +25,7 @@ impl MyDeck {
     }
 
     pub fn add_note(&mut self,qusetion: String,answer: String){
-        self.deck.add_note(Note::new(self.my_model,vec![qusetion.as_str(),answer.as_str()]).unwrap());
+        self.deck.add_note(Note::new(self.my_model.clone(),vec![qusetion.as_str(),answer.as_str()]).unwrap());
     }
 
     pub fn write(self,file:&'static str){
@@ -36,7 +36,7 @@ impl MyDeck {
 struct MarkDownParser {
     note_sep: &'static str,
     qusetion_sep:&'static str,
-    notes: Option<Vec<MyCard>>,
+    notes: Vec<MyCard>,
 }
 
 struct MyCard(String,String);
@@ -47,13 +47,13 @@ impl MarkDownParser {
         MarkDownParser {
             note_sep,
             qusetion_sep,
-            notes:None
+            notes:Vec::new(),
         }
 
     }
 
     pub fn add_card(&mut self,card:MyCard) {
-        self.notes.insert(card);
+        self.notes.push(card);
     }
 
     pub fn parse_from_file(&mut self,file:&'static str) {
