@@ -85,8 +85,9 @@ impl MarkDownParser {
         let cards = temp.split(self.note_sep);
 
         for card in cards {
-            let split: Vec<&str> = card.split(self.qusetion_sep).collect();
-            self.add_card(MyCard(String::from(split[0]), String::from(split[1])));
+            if let Some((q,a)) = card.split_once(self.qusetion_sep){
+                self.add_card(MyCard(String::from(q), String::from(a)));
+            }
         }
     }
 }
@@ -107,7 +108,7 @@ pub fn parse_to_html(input: &str) -> String {
 pub fn generate_apkg(md: String, apkg: String) -> Result<()> {
     let mut mark_down_parser = MarkDownParser::new("\n\n\n", "---");
     let md_path = PathBuf::from(md.add(".md"));
-    let apkg_path = apkg.add(".md");
+    let apkg_path = apkg.add(".apkg");
     mark_down_parser.parse_from_file(md_path);
     let mut my_deck = MyDeck::new(123453, "test_rust", "test_from_rust");
     for card in mark_down_parser.notes.into_iter() {
@@ -118,10 +119,11 @@ pub fn generate_apkg(md: String, apkg: String) -> Result<()> {
 }
 
 pub fn generate_apkg_from_current_dir() {
-    for entry in WalkDir::new(".").into_iter() {
+    for entry in WalkDir::new(".").max_depth(1).into_iter() {
         let entry = entry.unwrap();
         if let Some(file_name) = entry.file_name().to_str() {
             if file_name.ends_with(".md") {
+                let file_name = file_name.get(..(file_name.len() -3)).unwrap();
                 generate_apkg(String::from(file_name), String::from(file_name)).unwrap();
             }
         }
