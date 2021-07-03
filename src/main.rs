@@ -1,27 +1,30 @@
-mod cli;
-mod task;
 mod anki;
-mod anki_connector;
+mod cli;
+//mod anki_connector;
 use structopt::StructOpt;
 
-use anyhow::anyhow;
-use cli::{CommandLineArgs};
-use task::Task;
-use std::path::PathBuf;
+use cli::CommandLineArgs;
 
-fn main() ->anyhow::Result<()> {
+fn main() -> anyhow::Result<()> {
     let CommandLineArgs {
-        journal_file,
-        output_file,  
-        flag,
+        markdown_file,
+        apkg_file,
     } = CommandLineArgs::from_args();
 
-    let journal_file = journal_file
-        .ok_or(anyhow!("failed to find journal file"))?;
+    match (markdown_file, apkg_file) {
+        (Some(md), Some(apkg)) => {
+            anki::generate_apkg(md, apkg)?;
+        }
+        (Some(md), None) => {
+            anki::generate_apkg(md.clone(), md)?;
+        }
+        (None, Some(apkg)) => {
+            anki::generate_apkg(apkg.clone(), apkg)?;
+        }
+        (None, None) => {
+            anki::generate_apkg_from_current_dir();
+        }
+    };
 
-    anki::generate_apkg(journal_file)?;
     Ok(())
 }
-
-
-

@@ -1,4 +1,3 @@
-use std::path::PathBuf;
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
@@ -7,11 +6,11 @@ use structopt::StructOpt;
     about = "A command line app written in Rust"
 )]
 pub struct CommandLineArgs {
-    /// Use a different journal file.
-    #[structopt(parse(from_os_str), short, long)]
-    pub journal_file: Option<PathBuf>,
-    #[structopt(parse(from_os_str), short, long)]
-    pub output_file: Option<PathBuf>,
+    /// 指定markdown文件名.务虚写后缀,默认与另外一个同名
+    // #[structopt(parse(from_os_str), short, long)]
     #[structopt(short, long)]
-    pub flag:bool,
+    pub markdown_file: Option<String>,
+    /// 指定apkg文件名.无需写后缀.默认与另外一个同名
+    #[structopt(short, long)]
+    pub apkg_file: Option<String>,
 }
