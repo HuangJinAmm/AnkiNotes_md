@@ -5,7 +5,7 @@ use structopt::StructOpt;
 
 use cli::CommandLineArgs;
 
-fn main() -> anyhow::Result<()> {
+fn main() {
     let CommandLineArgs {
         markdown_file,
         apkg_file,
@@ -13,18 +13,16 @@ fn main() -> anyhow::Result<()> {
 
     match (markdown_file, apkg_file) {
         (Some(md), Some(apkg)) => {
-            anki::generate_apkg(md, apkg)?;
+            anki::generate_apkg(md, apkg).unwrap();
         }
         (Some(md), None) => {
-            anki::generate_apkg(md.clone(), md)?;
+            anki::generate_apkg(md.clone(), md).unwrap();
         }
         (None, Some(apkg)) => {
-            anki::generate_apkg(apkg.clone(), apkg)?;
+            anki::generate_apkg(apkg.clone(), apkg).unwrap();
         }
         (None, None) => {
             anki::generate_apkg_from_current_dir();
         }
     };
-
-    Ok(())
 }
