@@ -13,8 +13,6 @@ use walkdir::WalkDir;
 const note_key: &str = "note_seperator";
 const question_key: &str = "question_seperator";
 
-const note_default: &str = "\n\n\n";
-const question_default: &str = "---";
 struct MyDeck {
     my_model: Model,
     deck: Deck,
@@ -23,7 +21,7 @@ struct MyDeck {
 
 impl MyDeck {
     pub fn new(id: usize, name: &'static str, decription: &'static str) -> Self {
-        let custom_css = ".card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n}\n";
+        let custom_css = ".card {\n font-family: arial;\n font-size: 20px;\n color: black;\n}\n";
         let my_model = Model::new_with_options(
             1607392319,
             "Simple Model",
@@ -89,6 +87,17 @@ struct MarkDownParser {
 
 struct MyCard(String, String);
 
+impl Default for MarkDownParser {
+
+    fn default() -> Self {
+        MarkDownParser{
+            note_sep:String::from("\r\n\r\n\r\n"),
+            qusetion_sep:String::from("---"),
+            notes: Vec::new(),
+        }
+    }
+}
+
 impl MarkDownParser {
     pub fn new(note_sep: String, qusetion_sep: String) -> Self {
         MarkDownParser {
@@ -133,12 +142,16 @@ pub fn parse_to_html(input: &str) -> String {
 
 pub fn generate_apkg(md: String, apkg: String) -> Result<()> {
     let mut setting = config::Config::default();
-    setting.merge(config::File::with_name("setting")).unwrap();
-    let config = setting.try_into::<HashMap<String, String>>().unwrap();
-    let note_sep = config.get(note_key).unwrap();
-    let qusetion_sep = config.get(question_key).unwrap();
+    let mut mark_down_parser = MarkDownParser::default();
+    if let Ok(_) = setting.merge(config::File::with_name("setting")){
+        let config = setting.try_into::<HashMap<String, String>>().unwrap();
+        let default_note_seq = &String::from("\r\n\r\n\r\n");
+        let default_qust_seq = &String::from("---");
+        let note_sep = config.get(note_key).unwrap_or(&default_note_seq);
+        let qusetion_sep = config.get(question_key).unwrap_or(&default_qust_seq);
+        mark_down_parser = MarkDownParser::new(note_sep.to_owned(), qusetion_sep.to_owned());
+    }
 
-    let mut mark_down_parser = MarkDownParser::new(note_sep.to_owned(), qusetion_sep.to_owned());
     let md_path = PathBuf::from(md.add(".md"));
     let apkg_path = apkg.add(".apkg");
     mark_down_parser.parse_from_file(md_path);
@@ -150,16 +163,17 @@ pub fn generate_apkg(md: String, apkg: String) -> Result<()> {
     Ok(())
 }
 
-pub fn generate_apkg_from_current_dir() {
+pub fn generate_apkg_from_current_dir() -> Result<()>{
     for entry in WalkDir::new(".").max_depth(1).into_iter() {
         let entry = entry.unwrap();
         if let Some(file_name) = entry.file_name().to_str() {
             if file_name.ends_with(".md") {
                 let file_name = file_name.get(..(file_name.len() - 3)).unwrap();
-                generate_apkg(String::from(file_name), String::from(file_name)).unwrap();
+                generate_apkg(String::from(file_name), String::from(file_name))?;
             }
         }
     }
+    Ok(())
 }
 
 #[cfg(test)]
