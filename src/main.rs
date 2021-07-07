@@ -1,11 +1,11 @@
 mod anki;
 mod cli;
 //mod anki_connector;
-use structopt::StructOpt;
 use anyhow::Result;
 use cli::CommandLineArgs;
+use structopt::StructOpt;
 
-fn main() -> Result<()>{
+fn main() -> Result<()> {
     let CommandLineArgs {
         markdown_file,
         apkg_file,

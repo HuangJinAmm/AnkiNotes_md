@@ -20,8 +20,14 @@ struct MyDeck {
 }
 
 impl MyDeck {
-    pub fn new(id: usize, name: &'static str, decription: &'static str) -> Self {
-        let custom_css = ".card {\n font-family: arial;\n font-size: 20px;\n color: black;\n}\n";
+    pub fn new(id: usize, name: &str, decription: & str) -> Self {
+        let custom_css = ".card { font-family: arial; font-size: 18px; color: black; }\n 
+pre code { display: block; overflow-x: auto; background: #191f26; color: #e6e1cf; padding: 0.5em; }\n
+code { background: #191f26; color: #e6e1cf; }\n
+strong { backgroud: #ffee99; color: #ff7733; }\n
+table {font-family: verdana,arial,sans-serif;font-size:11px;color:#333333;border-width: 1px;border-color: #666666;border-collapse: collapse;}
+table th {border-width: 1px;padding: 8px;border-style: solid;border-color: #666666;background-color: #dedede;}
+table td {border-width: 1px;padding: 8px;border-style: solid;border-color: #666666;background-color: #ffffff;}";
         let my_model = Model::new_with_options(
             1607392319,
             "Simple Model",
@@ -88,11 +94,10 @@ struct MarkDownParser {
 struct MyCard(String, String);
 
 impl Default for MarkDownParser {
-
     fn default() -> Self {
-        MarkDownParser{
-            note_sep:String::from("\r\n\r\n\r\n"),
-            qusetion_sep:String::from("---"),
+        MarkDownParser {
+            note_sep: String::from("\r\n\r\n\r\n"),
+            qusetion_sep: String::from("---"),
             notes: Vec::new(),
         }
     }
@@ -128,9 +133,7 @@ impl MarkDownParser {
 }
 
 pub fn parse_to_html(input: &str) -> String {
-    let mut options = Options::empty();
-    options.insert(Options::ENABLE_STRIKETHROUGH);
-
+    let mut options = Options::all();
     let parser = Parser::new_ext(input, options);
 
     let mut html_output = String::new();
@@ -143,7 +146,7 @@ pub fn parse_to_html(input: &str) -> String {
 pub fn generate_apkg(md: String, apkg: String) -> Result<()> {
     let mut setting = config::Config::default();
     let mut mark_down_parser = MarkDownParser::default();
-    if let Ok(_) = setting.merge(config::File::with_name("setting")){
+    if let Ok(_) = setting.merge(config::File::with_name("setting")) {
         let config = setting.try_into::<HashMap<String, String>>().unwrap();
         let default_note_seq = &String::from("\r\n\r\n\r\n");
         let default_qust_seq = &String::from("---");
@@ -151,11 +154,11 @@ pub fn generate_apkg(md: String, apkg: String) -> Result<()> {
         let qusetion_sep = config.get(question_key).unwrap_or(&default_qust_seq);
         mark_down_parser = MarkDownParser::new(note_sep.to_owned(), qusetion_sep.to_owned());
     }
-
+    let apkg_name = apkg.clone();
+    let mut my_deck = MyDeck::new(123453, apkg_name.as_str(), "auto_generated_by_akmd");
     let md_path = PathBuf::from(md.add(".md"));
     let apkg_path = apkg.add(".apkg");
     mark_down_parser.parse_from_file(md_path);
-    let mut my_deck = MyDeck::new(123453, "test_rust", "test_from_rust");
     for card in mark_down_parser.notes.into_iter() {
         my_deck.add_note(card);
     }
@@ -163,7 +166,7 @@ pub fn generate_apkg(md: String, apkg: String) -> Result<()> {
     Ok(())
 }
 
-pub fn generate_apkg_from_current_dir() -> Result<()>{
+pub fn generate_apkg_from_current_dir() -> Result<()> {
     for entry in WalkDir::new(".").max_depth(1).into_iter() {
         let entry = entry.unwrap();
         if let Some(file_name) = entry.file_name().to_str() {
@@ -211,5 +214,29 @@ mod tests {
             r"axs![aaaa](E:\code\rust\AnkiNotes_md\image\test\2021-06-21.png)jhgn",
         );
         println!("{}", r);
+    }
+
+    #[test]
+    fn test_css() {
+        let custom_css = ".card {
+font-family: arial;
+font-size: 30px; 
+color: red;
+} 
+code {
+display: block;
+overflow-x: auto;
+background: #191f26;
+color: #e6e1cf;
+padding: 0.5em;
+}
+strong {
+backgroud: #ffee99;
+color: #ff7733;
+}
+table {font-family: verdana,arial,sans-serif;font-size:11px;color:#333333;border-width: 1px;border-color: #666666;border-collapse: collapse;}
+table th {border-width: 1px;padding: 8px;border-style: solid;border-color: #666666;background-color: #dedede;}
+table td {border-width: 1px;padding: 8px;border-style: solid;border-color: #666666;background-color: #ffffff;}";
+        println!("{}",custom_css);
     }
 }
