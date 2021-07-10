@@ -6,24 +6,14 @@ use cli::CommandLineArgs;
 use structopt::StructOpt;
 
 fn main() -> Result<()> {
-    let CommandLineArgs {
-        markdown_file,
-        apkg_file,
-    } = CommandLineArgs::from_args();
+    let CommandLineArgs { files } = CommandLineArgs::from_args();
 
-    match (markdown_file, apkg_file) {
-        (Some(md), Some(apkg)) => {
-            anki::generate_apkg(md, apkg)?;
+    if files.len() != 0 {
+        for file in files {
+            anki::generate_apkg(file)?;
         }
-        (Some(md), None) => {
-            anki::generate_apkg(md.clone(), md)?;
-        }
-        (None, Some(apkg)) => {
-            anki::generate_apkg(apkg.clone(), apkg)?;
-        }
-        (None, None) => {
-            anki::generate_apkg_from_current_dir()?;
-        }
-    };
+    } else {
+        anki::generate_apkg_from_current_dir()?;
+    }
     Ok(())
 }
