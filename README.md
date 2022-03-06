@@ -24,8 +24,6 @@ ARGS:
 
 
 
-
-
 ### 设置
 
 ---
@@ -43,12 +41,22 @@ css = ""
 
 
 
-
-
 ### 效果示例
 
 ---
 
-<img src="https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231005564.png" alt="image-20210721231005564" style="zoom: 50%;" />![image-20210721231035512](https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231035512.png)![image-20210721231052965](https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231052965.png)
+<img src="https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231005564.png" alt="image-20210721231005564" style="zoom: 50%;" />
+![image-20210721231035512](https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231035512.png)
+![image-20210721231052965](https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231052965.png)
 
-<img src="https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231110394.png" alt="image-20210721231110394" style="zoom:50%;" />![image-20210721231130470](https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231130470.png)![image-20210721231319894](https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231319894.png)![image-20210721231319894](https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231319894.png)<img src="https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231130470.png" alt="image-20210721231130470" /><img src="https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231202988.png" alt="image-20210721231202988" />
+<img src="https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231110394.png" alt="image-20210721231110394" style="zoom:50%;" />
+![image-20210721231130470](https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231130470.png)
+![image-20210721231319894](https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231319894.png)
+![image-20210721231319894](https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231319894.png)
+<img src="https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231130470.png" alt="image-20210721231130470" />
+<img src="https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/image-20210721231202988.png" alt="image-20210721231202988" />
+
+
+![rust](https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/rust.png)
+![java](https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/java.png)
+![json](https://github.com/HuangJinAmm/AnkiNotes_md/blob/main/image/README/json.png)
